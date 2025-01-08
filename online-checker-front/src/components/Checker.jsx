@@ -10,7 +10,9 @@ export const Checker = () => {
     useEffect(() => {
         const fetchWebsites = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/check');
+                const response = await axios.get('https://online-checker.onrender.com/api/check');
+                //Local version
+                // const response = await axios.get('http://localhost:5000/api/check');
                 setWebsites(response.data);
                 setLoading(false);
             } catch (err) {
@@ -22,7 +24,7 @@ export const Checker = () => {
     
         fetchWebsites(); // Llamada inicial
     
-        const interval = setInterval(fetchWebsites, 30000); // Actualiza cada 30 segundos
+        const interval = setInterval(fetchWebsites, 60000); // Actualiza cada 60 segundos
     
         return () => clearInterval(interval); // Limpia el intervalo al desmontar el componente
     }, []);

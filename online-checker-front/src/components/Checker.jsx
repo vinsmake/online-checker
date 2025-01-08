@@ -19,9 +19,14 @@ export const Checker = () => {
                 setLoading(false);
             }
         };
-
-        fetchWebsites();
+    
+        fetchWebsites(); // Llamada inicial
+    
+        const interval = setInterval(fetchWebsites, 30000); // Actualiza cada 30 segundos
+    
+        return () => clearInterval(interval); // Limpia el intervalo al desmontar el componente
     }, []);
+    
 
     if (loading) return <div>Cargando...</div>;
 

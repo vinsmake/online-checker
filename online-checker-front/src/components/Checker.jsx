@@ -3,29 +3,29 @@ import { useEffect, useState } from 'react';
 import { Webs } from './Webs';
 
 export const Checker = () => {
-
-    //States
     const [websites, setWebsites] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    // Llama al backend para obtener el estado de los sitios web
     useEffect(() => {
-        axios.get('http://localhost:5000/api/check')
-            .then(response => {
+        const fetchWebsites = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/api/check');
                 setWebsites(response.data);
                 setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
+            } catch (err) {
+                console.error('Error fetching data:', err);
+                setError('No se pudieron obtener los datos. Inténtalo de nuevo más tarde.');
                 setLoading(false);
-            });
+            }
+        };
+
+        fetchWebsites();
     }, []);
 
-    if (loading) {
-        return <div>Cargando...</div>;
-    }
+    if (loading) return <div>Cargando...</div>;
 
-    return (
-        <Webs websites={websites} />
-    )
-}
+    if (error) return <div className="text-red-500">{error}</div>;
+
+    return <Webs websites={websites} />;
+};

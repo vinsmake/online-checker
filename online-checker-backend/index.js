@@ -1,6 +1,6 @@
 const express = require('express');
-const cors = require('cors'); // Importar cors
-const ping = require('ping');
+const cors = require('cors');
+const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 
@@ -15,7 +15,7 @@ const weblistPath = path.join(__dirname, 'data', 'weblist.json');
 
 // Endpoint para verificar el estado de los sitios web
 app.get('/api/check', async (req, res) => {
-    // Leer la lista de sitios desde weblist.json
+    // Leer la lista de sitios desde el archivo JSON
     let websites;
     try {
         const data = fs.readFileSync(weblistPath, 'utf8');
@@ -24,24 +24,29 @@ app.get('/api/check', async (req, res) => {
         return res.status(500).json({ error: 'No se pudo leer la lista de sitios web.' });
     }
 
-    // Realizar ping a cada sitio
-    const results = [];
-    for (const website of websites) {
-        try {
-            const response = await ping.promise.probe(website);
-            results.push({
-                website: website,
-                status: response.alive ? 'Online' : 'Offline',
-                responseTime: response.alive ? `${response.time} ms` : 'N/A'
-            });
-        } catch (error) {
-            results.push({
-                website: website,
-                status: 'Error',
-                error: error.message
-            });
-        }
-    }
+    // Verificar cada sitio web usando axios
+    const results = await Promise.all(
+        websites.map(async (website) => {
+            try {
+                const start = Date.now();
+                const response = await axios.get(`https://${website}`, { timeout: 5000 });
+                const end = Date.now();
+                return {
+                    website,
+                    status: 'Online',
+                    responseTime: `${end - start} ms`,
+                    statusCode: response.status,
+                };
+            } catch (error) {
+                return {
+                    website,
+                    status: 'Offline',
+                    responseTime: 'N/A',
+                    error: error.code || error.message,
+                };
+            }
+        })
+    );
 
     res.json(results);
 });

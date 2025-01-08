@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Webs } from './Webs';
+import { Loading } from './Loading';
 
 export const Checker = () => {
     const [websites, setWebsites] = useState([]);
@@ -30,7 +31,7 @@ export const Checker = () => {
     }, []);
     
 
-    if (loading) return <div>Cargando...</div>;
+    if (loading) return <Loading />;
 
     if (error) return <div className="text-red-500">{error}</div>;
 

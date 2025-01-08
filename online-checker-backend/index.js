@@ -5,7 +5,10 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const port = 5000;
+
+// Render asigna un puerto dinámico mediante la variable PORT
+const port = process.env.PORT || 5000;
+
 
 // Habilitar CORS
 app.use(cors());

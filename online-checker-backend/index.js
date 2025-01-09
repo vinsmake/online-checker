@@ -16,7 +16,6 @@ app.use(cors());
 axiosRetry(axios, {
   retries: 3, // Número de reintentos
   retryDelay: (retryCount) => {
-    console.log(`Intento de reintento: ${retryCount}`);
     return retryCount * 1000; // Retraso entre reintentos (1s, 2s, 3s)
   },
   retryCondition: (error) => {

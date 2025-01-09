@@ -3,7 +3,6 @@ const cors = require('cors');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
-
 const app = express();
 
 // Render asigna un puerto dinámico mediante la variable PORT
@@ -21,37 +20,37 @@ app.get('/api/check', async (req, res) => {
     // Leer la lista de sitios desde el archivo JSON
     let websites;
     try {
-        const data = fs.readFileSync(weblistPath, 'utf8');
-        websites = JSON.parse(data);
+        const data = fs.readFileSync(weblistPath, 'utf8'); // Lee el archivo JSON de forma síncrona
+        websites = JSON.parse(data); // Parsea el contenido del archivo JSON
     } catch (error) {
         return res.status(500).json({ error: 'No se pudo leer la lista de sitios web.' });
     }
 
-    // Verificar cada sitio web usando axios
+    // Verificar cada sitio web usando axios. Es importante utilizar axios ya que si se utiliza ping, aquellas webs que lo tengan bloqueado no podran ser verificadas.
     const results = await Promise.all(
         websites.map(async (website) => {
             try {
-                const start = Date.now();
-                const response = await axios.get(`https://${website}`, { timeout: 5000 });
-                const end = Date.now();
+                const start = Date.now(); // Registra el tiempo de inicio de la solicitud
+                const response = await axios.get(`https://${website}`, { timeout: 5000 }); // Hace una solicitud GET al sitio web con un tiempo de espera de 5 segundos
+                const end = Date.now(); // Registra el tiempo de finalización de la solicitud
                 return {
-                    website,
-                    status: 'Online',
-                    responseTime: `${end - start} ms`,
-                    statusCode: response.status,
+                    website, // Nombre del sitio web
+                    status: 'Online', // Estado del sitio web (en línea)
+                    responseTime: `${end - start} ms`, // Tiempo de respuesta de la solicitud
+                    statusCode: response.status, // Código de estado HTTP de la respuesta
                 };
             } catch (error) {
                 return {
-                    website,
-                    status: 'Offline',
-                    responseTime: 'N/A',
-                    error: error.code || error.message,
+                    website, // Nombre del sitio web
+                    status: 'Offline', // Estado del sitio web (fuera de línea)
+                    responseTime: 'N/A', // Tiempo de respuesta no disponible
+                    error: error.code || error.message, // Código o mensaje de error
                 };
             }
         })
     );
 
-    res.json(results);
+    res.json(results); // Devuelve los resultados en formato JSON
 });
 
 // Inicia el servidor

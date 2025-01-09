@@ -35,7 +35,6 @@ export const Checker = () => {
     
         return () => clearInterval(interval); // Limpia el intervalo al desmontar el componente
     }, []);
-    
 
     if (loading) return <Loading />;
 

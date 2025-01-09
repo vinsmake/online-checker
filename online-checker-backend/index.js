@@ -43,23 +43,44 @@ app.get('/api/check', async (req, res) => {
   const results = await Promise.all(
     websites.map(async (website) => {
       try {
-        const start = Date.now(); // Registra el tiempo de inicio de la solicitud
-        const response = await axios.get(`https://${website}`, { timeout: 10000 }); // Hace una solicitud GET al sitio web con un tiempo de espera de 10 segundos
-        const end = Date.now(); // Registra el tiempo de finalización de la solicitud
+        const start = Date.now();
+        const response = await axios.get(`https://${website}`, { timeout: 10000 });
+        const end = Date.now();
         return {
-          website, // Nombre del sitio web
-          status: 'Online', // Estado del sitio web (en línea)
-          responseTime: `${end - start} ms`, // Tiempo de respuesta de la solicitud
-          statusCode: response.status, // Código de estado HTTP de la respuesta
+          website,
+          status: 'Online',
+          responseTime: `${end - start} ms`,
+          statusCode: response.status,
         };
       } catch (error) {
+        let errorMessage;
+        let status = 'Offline'; // Por defecto, marcamos como "Offline"
+    
+        if (error.code === 'ENOTFOUND') {
+            errorMessage = 'Dominio no encontrado (ENOTFOUND)';
+        } else if (error.code === 'ECONNABORTED') {
+            errorMessage = 'Tiempo de espera agotado (Timeout)';
+        } else if (error.code === 'ECONNREFUSED') {
+            errorMessage = 'Conexión rechazada (ECONNREFUSED)';
+        } else if (error.code === 'UNABLE_TO_VERIFY_LEAF_SIGNATURE') {
+            errorMessage = 'Problema con el certificado SSL';
+            status = 'Danger'; // Marcar como "Danger" si es un problema de SSL
+        } else if (error.code === 'CERT_HAS_EXPIRED') {
+            errorMessage = 'El certificado SSL ha caducado';
+            status = 'Danger'; // Marcar como "Danger" si el certificado ha caducado
+        } else {
+            errorMessage = error.message || 'Error desconocido';
+        }
+    
         return {
-          website, // Nombre del sitio web
-          status: 'Offline', // Estado del sitio web (fuera de línea)
-          responseTime: 'N/A', // Tiempo de respuesta no disponible
-          error: error.code || error.message, // Código o mensaje de error
+            website,
+            status,
+            responseTime: status === 'Danger' ? 'N/A' : 'N/A', // Tiempo no disponible para errores
+            statusCode: status === 'Danger' ? 'N/A' : 'N/A',   // Código no disponible para errores
+            error: errorMessage,
         };
-      }
+    }
+    
     })
   );
 

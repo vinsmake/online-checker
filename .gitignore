@@ -1,0 +1,18 @@
+# Node.js dependencies
+node_modules/
+
+# Archivos de entorno
+.env
+.env.production
+
+# Salida de build
+/dist
+online-checker-front/dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db

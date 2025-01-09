@@ -4,6 +4,9 @@ import { Webs } from './Webs';
 import { Loading } from './Loading';
 
 export const Checker = () => {
+
+    const apiBaseUrl = import.meta.env.VITE_API_URL;
+
     const [websites, setWebsites] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -11,9 +14,12 @@ export const Checker = () => {
     useEffect(() => {
         const fetchWebsites = async () => {
             try {
-                const response = await axios.get('https://online-checker.onrender.com/api/check');
+                //Remote version
+                // const response = await axios.get('https://online-checker.onrender.com/api/check');
                 //Local version
                 // const response = await axios.get('http://localhost:5000/api/check');
+                // Dynamic version
+                const response = await axios.get(`${apiBaseUrl}/api/check`);
                 setWebsites(response.data);
                 setLoading(false);
             } catch (err) {

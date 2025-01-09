@@ -15,7 +15,7 @@ export const Webs = ({ websites }) => {
                             <th className="border border-gray-300 px-4 py-2 text-left">Código de Estado</th>
                         </tr>
                     </thead>
-                    
+
                     <tbody>
                         {websites.map((website, index) => (
                             <tr key={index} className="hover:bg-gray-50">
@@ -30,11 +30,12 @@ export const Webs = ({ websites }) => {
                                     </a>
                                 </td>
                                 <td
-                                    className={`border border-gray-300 px-4 py-2 ${
-                                        website.status === "Online"
+                                    className={`border border-gray-300 px-4 py-2 ${website.status === "Online"
                                             ? "text-green-600 font-semibold"
-                                            : "text-red-600 font-semibold"
-                                    }`}
+                                            : website.status === "Danger"
+                                                ? "text-yellow-500 font-semibold"
+                                                : "text-red-600 font-semibold"
+                                        }`}
                                 >
                                     {website.status}
                                 </td>
@@ -42,7 +43,7 @@ export const Webs = ({ websites }) => {
                                     {website.responseTime}
                                 </td>
                                 <td className="border border-gray-300 px-4 py-2">
-                                    {website.statusCode || "N/A"}
+                                    {website.status === 'Online' ? website.statusCode : website.error || 'N/A'}
                                 </td>
                             </tr>
                         ))}

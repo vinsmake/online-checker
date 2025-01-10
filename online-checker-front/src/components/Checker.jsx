@@ -5,40 +5,48 @@ import { Loading } from './Loading';
 import { Error } from './Error';
 
 export const Checker = () => {
+
+
+
     const apiBaseUrl = import.meta.env.VITE_API_URL;
+
+
 
     const [websites, setWebsites] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState(false);
+    const [ServerError, setServerError ] = useState(false);
     const [retryCount, setRetryCount] = useState(0);
 
-    const maxRetries = 5; // Máximo de intentos permitidos
 
+
+    const maxRetries = 5; 
     useEffect(() => {
         const fetchWebsites = async () => {
             try {
                 const response = await axios.get(`${apiBaseUrl}/api/check`);
                 setWebsites(response.data);
                 setLoading(false);
-                setError(null); // Limpia el error si el intento tiene éxito
+                setError(false);
+                setServerError(false);
             } catch (err) {
                 console.error('Error fetching data:', err);
                 if (retryCount < maxRetries) {
                     console.log(`Reintentando... (${retryCount + 1}/${maxRetries})`);
                     setRetryCount((prevCount) => prevCount + 1);
-                    setTimeout(fetchWebsites, 5000); // Reintenta después de 5 segundos
+                    setTimeout(fetchWebsites, 5000);
                 } else {
-                    setError('No se pudieron obtener los datos. Inténtalo de nuevo más tarde.');
+                    setError(true);
                     setLoading(false);
                 }
             }
         };
 
-        fetchWebsites(); // Llamada inicial
+        fetchWebsites(); 
 
-        const interval = setInterval(fetchWebsites, 60000); // Actualiza cada 60 segundos
+        const interval = setInterval(fetchWebsites, 60000); 
 
-        return () => clearInterval(interval); // Limpia el intervalo al desmontar el componente
+        return () => clearInterval(interval);
     }, [retryCount]);
 
     if (loading) return <Loading />;

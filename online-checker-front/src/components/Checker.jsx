@@ -14,8 +14,8 @@ export const Checker = () => {
 
     const [websites, setWebsites] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-    const [ServerError, setServerError ] = useState(false);
+    const [errorAlarm, setErrorAlarm] = useState(false);
+    const [ServerErrorAlarm, setServerErrorAlarm ] = useState(false);
     const [retryCount, setRetryCount] = useState(0);
 
 
@@ -27,8 +27,7 @@ export const Checker = () => {
                 const response = await axios.get(`${apiBaseUrl}/api/check`);
                 setWebsites(response.data);
                 setLoading(false);
-                setError(false);
-                setServerError(false);
+                setErrorAlarm(false);
             } catch (err) {
                 console.error('Error fetching data:', err);
                 if (retryCount < maxRetries) {
@@ -36,7 +35,7 @@ export const Checker = () => {
                     setRetryCount((prevCount) => prevCount + 1);
                     setTimeout(fetchWebsites, 5000);
                 } else {
-                    setError(true);
+                    setErrorAlarm(true);
                     setLoading(false);
                 }
             }
@@ -51,7 +50,7 @@ export const Checker = () => {
 
     if (loading) return <Loading />;
 
-    if (error) return <Error/>;
+    if (errorAlarm) return <Error/>;
 
     return <Webs websites={websites} />;
 };

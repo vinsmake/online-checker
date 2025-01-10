@@ -38,13 +38,13 @@ export const Webs = ({ websites }) => {
                                         {website.status}
                                     </span>
                                 </div>
-                                {/* website time */}
+                                {/* website response */}
                                 <div className="col-span-1 text-black">
-                                    {website.responseTime}
+                                    {website.responseTime === "N/A" ? "Sin respuesta" : website.responseTime}
                                 </div>
                                 {/* website code */}
                                 <div className="col-span-1 text-black">
-                                    {website.status === "Online" ? website.statusCode : website.error || "N/A"}
+                                    {website.status === "Online" ? website.statusCode : website.error || "Error no listado"}
                                 </div>
                             </div>
 
@@ -77,15 +77,15 @@ export const Webs = ({ websites }) => {
                                 </div>
 
                                 {/* Second row */}
-                                    {/* response */}
-                                    <div className="text-black">
-                                        {website.responseTime === "N/A" ? "Sin respuesta" :  website.responseTime}
-                                    </div>
+                                {/* response */}
+                                <div className="text-black">
+                                    {website.responseTime === "N/A" ? "Sin respuesta" : website.responseTime}
+                                </div>
 
-                                    {/* status */}
-                                    <div className="text-black">
-                                        {website.status === "Online" ? website.statusCode : website.error || "Error no listado"}
-                                    </div>
+                                {/* status */}
+                                <div className="text-black">
+                                    {website.status === "Online" ? website.statusCode : website.error || "Error no listado"}
+                                </div>
 
 
                             </div>

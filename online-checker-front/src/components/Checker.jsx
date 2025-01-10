@@ -33,7 +33,7 @@ export const Checker = () => {
                 if (retryCount < maxRetries) {
                     console.log(`Reintentando... (${retryCount + 1}/${maxRetries})`);
                     setRetryCount((prevCount) => prevCount + 1);
-                    setTimeout(fetchWebsites, 5000);
+                    setTimeout(fetchWebsites, 10000);
                 } else {
                     setErrorAlarm(true);
                     setLoading(false);

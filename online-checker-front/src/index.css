@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .background {
-    background-image: url(./online-checker/background.jpg);
+    background-image: url(../background.jpg);
     background-position: center;
     background-repeat: repeat;
 }

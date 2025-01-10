@@ -56,16 +56,16 @@ app.get('/api/check', async (req, res) => {
         let status = 'Offline'; // Por defecto, marcamos como "Offline"
     
         if (error.code === 'ENOTFOUND') {
-            errorMessage = 'Dominio no encontrado (ENOTFOUND)';
+            errorMessage = 'Dominio no encontrado';
         } else if (error.code === 'ECONNABORTED') {
-            errorMessage = 'Tiempo de espera agotado (Timeout)';
+            errorMessage = 'Tiempo de espera agotado';
         } else if (error.code === 'ECONNREFUSED') {
-            errorMessage = 'Conexión rechazada (ECONNREFUSED)';
+            errorMessage = 'Conexión rechazada';
         } else if (error.code === 'UNABLE_TO_VERIFY_LEAF_SIGNATURE') {
-            errorMessage = 'Problema con el certificado SSL';
+            errorMessage = 'Problema de certificado SSL';
             status = 'Danger'; // Marcar como "Danger" si es un problema de SSL
         } else if (error.code === 'CERT_HAS_EXPIRED') {
-            errorMessage = 'El certificado SSL ha caducado';
+            errorMessage = 'Certificado SSL caducado';
             status = 'Danger'; // Marcar como "Danger" si el certificado ha caducado
         } else {
             errorMessage = error.message || 'Error desconocido';

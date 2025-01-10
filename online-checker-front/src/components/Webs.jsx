@@ -1,17 +1,31 @@
 export const Webs = ({ websites }) => {
     return (
-        <section className="bg-gradient-to-b from-blue-50 to-blue-300">
+        <section className="background">
 
             <div className="container mx-auto p-4">
 
-                <h1 className="text-4xl font-bold mb-4 text-center">Estado de Sitios Web CGIG</h1>
+                <h1 class="mb-4 text-3xl font-extrabold text-orange-500 dark:text-white md:text-5xl lg:text-6xl text-center drop-shadow-[0_1px_1.2px_rgba(0,0,0,1)]
 
-                <div className="bg-white">
+">Estado de sitios
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-300 to-orange-600 "> CGIG</span>
+                </h1>
+
+
+                <div className="bg-white border-8 rounded-xl border-gray-600">
 
                     {websites.map((website, index) => (
                         <div
                             key={index}
-                            className="border border-gray-200 p-4 hover:bg-gray-50"
+                            className={`border border-gray-200  p-4 hover:transform hover:scale-105 transition-transform hover:rounded-xl
+
+                                ${website.status === "Online"
+                                    ? " bg-green-50 hover:bg-green-100 hover:border-green-300"
+                                    : website.status === "Danger"
+                                        ? "bg-yellow-50 hover:bg-yellow-100 hover:border-yellow-300"
+                                        : "bg-red-50 hover:bg-red-100 hover:border-red-300"
+                                }`
+
+                            }
                         >
                             {/* Desktop: Una sola fila */}
                             {/* website name */}
@@ -29,10 +43,10 @@ export const Webs = ({ websites }) => {
                                 <div className="col-span-1 text-black font-semibold">
                                     <span
                                         className={`px-4 py-2 rounded ${website.status === "Online"
-                                            ? "text-green-600 bg-green-100"
+                                            ? "text-green-700 bg-green-200"
                                             : website.status === "Danger"
-                                                ? "text-yellow-500 bg-yellow-100"
-                                                : "text-red-600 bg-red-100"
+                                                ? "text-yellow-700 bg-yellow-200"
+                                                : "text-red-700 bg-red-200"
                                             }`}
                                     >
                                         {website.status}
@@ -63,13 +77,13 @@ export const Webs = ({ websites }) => {
                                     </a>
                                 </div>
                                 {/* website status */}
-                                <div className="text-black font-semibold">
+                                <div className="text-black font-semibold text-right">
                                     <span
                                         className={`px-4 py-2 rounded ${website.status === "Online"
-                                            ? "text-green-600 bg-green-100"
+                                            ? "text-green-700 bg-green-200"
                                             : website.status === "Danger"
-                                                ? "text-yellow-500 bg-yellow-100"
-                                                : "text-red-600 bg-red-100"
+                                                ? "text-yellow-700 bg-yellow-200"
+                                                : "text-red-700 bg-red-200"
                                             }`}
                                     >
                                         {website.status}
@@ -78,15 +92,14 @@ export const Webs = ({ websites }) => {
 
                                 {/* Second row */}
                                 {/* response */}
-                                <div className="text-black">
+                                <div className="text-black ">
                                     {website.responseTime === "N/A" ? "Sin respuesta" : website.responseTime}
                                 </div>
 
                                 {/* status */}
-                                <div className="text-black">
+                                <div className="text-black text-right">
                                     {website.status === "Online" ? website.statusCode : website.error || "Error no listado"}
                                 </div>
-
 
                             </div>
                         </div>

@@ -4,7 +4,7 @@ export const Webs = ({ websites }) => {
 
             <div className="container mx-auto p-4">
 
-                <h1 class="mb-4 text-3xl font-extrabold text-orange-500 dark:text-white md:text-5xl lg:text-6xl text-center drop-shadow-[0_1px_1.2px_rgba(0,0,0,1)]
+                <h1 class="mb-4 text-3xl font-extrabold text-orange-500 md:text-5xl lg:text-6xl text-center drop-shadow-[0_1px_1.2px_rgba(0,0,0,1)]
 
 ">Estado de sitios
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-300 to-orange-600 "> CGIG</span>

@@ -8,9 +8,9 @@
     "install-front": "cd online-checker-front && npm install",
     "build-front": "cd online-checker-front && npm run build",
     "move-to-docs": "rmdir /S /Q docs && mkdir docs && xcopy online-checker-front\\dist docs /E /I /Y",
-    "gitPages-front": "npm run build-front && npm run move-to-docs && git add . && git commit -m \"deploy front\" && git push origin main:develop",
+    "update-front-docs": "npm run build-front && npm run move-to-docs",
     "gitUpdate": "git status && git add . && git commit -m \"Project updated\" && git push origin main:develop",
-    "gitUpdate-full": "npm run gitUpdate && npm run gitPages-front"
+    "gitUpdate-full": "npm run update-front-docs && npm run gitUpdate"
   },
   "repository": {
     "type": "git",

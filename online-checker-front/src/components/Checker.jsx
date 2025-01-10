@@ -1,49 +1,70 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Webs } from './Webs';
 import { Loading } from './Loading';
 import { Error } from './Error';
+import { ServerError } from './ServerError';
 
 export const Checker = () => {
     const apiBaseUrl = import.meta.env.VITE_API_URL;
 
     const [websites, setWebsites] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [retryCount, setRetryCount] = useState(0);
+    const [errorAlarm, setErrorAlarm] = useState(false);
+    const [errorServerAlarm, seterrorServerAlarm] = useState();
+    const retryCountRef = useRef(0);
 
-    const maxRetries = 5; // Máximo de intentos permitidos
+
+    const firstTry = 5;
+    const secondTry = 10;
 
     useEffect(() => {
         const fetchWebsites = async () => {
             try {
                 const response = await axios.get(`${apiBaseUrl}/api/check`);
                 setWebsites(response.data);
+                retryCountRef.current = 0; // Reiniciar el contador si la solicitud es exitosa
                 setLoading(false);
-                setError(null); // Limpia el error si el intento tiene éxito
+                setErrorAlarm(false);
+                seterrorServerAlarm(false);
+                setTimeout(fetchWebsites, 30000);
+                console.log('Data fetched');
             } catch (err) {
                 console.error('Error fetching data:', err);
-                if (retryCount < maxRetries) {
-                    console.log(`Reintentando... (${retryCount + 1}/${maxRetries})`);
-                    setRetryCount((prevCount) => prevCount + 1);
-                    setTimeout(fetchWebsites, 5000); // Reintenta después de 5 segundos
-                } else {
-                    setError('No se pudieron obtener los datos. Inténtalo de nuevo más tarde.');
+
+
+                if (retryCountRef.current <= firstTry) {
+                    console.log(`Reintentando... (${retryCountRef.current + 1}/${firstTry})`);
+                    setTimeout(fetchWebsites, 5000);
+                    retryCountRef.current += 1;
+                }
+
+                else if (retryCountRef.current <= secondTry) {
+                    setErrorAlarm(true);
                     setLoading(false);
+                    console.log(`Reintentando... (${retryCountRef.current + 1}/${secondTry})`);
+                    setTimeout(fetchWebsites, 5000);
+                    retryCountRef.current += 1;
+                } else {
+                    seterrorServerAlarm(true);
+                    setErrorAlarm(false);
+                    console.log(`Reintentando... (${retryCountRef.current + 1} veces)`);
+                    setTimeout(fetchWebsites, 5000);
+                    retryCountRef.current += 1;
                 }
             }
         };
 
-        fetchWebsites(); // Llamada inicial
+        fetchWebsites();
 
-        const interval = setInterval(fetchWebsites, 60000); // Actualiza cada 60 segundos
+        // const interval = setInterval(fetchWebsites, 60000);
+        // return () => clearInterval(interval);
 
-        return () => clearInterval(interval); // Limpia el intervalo al desmontar el componente
-    }, [retryCount]);
+    }, []);
 
     if (loading) return <Loading />;
-
-    if (error) return <Error/>;
+    if (errorAlarm) return <Error />;
+    if (errorServerAlarm) return <ServerError />;
 
     return <Webs websites={websites} />;
 };

@@ -11,7 +11,7 @@ export const Checker = () => {
     const [websites, setWebsites] = useState([]);
     const [loading, setLoading] = useState(true);
     const [errorAlarm, setErrorAlarm] = useState(false);
-    const [errorServerAlarm, seterrorServerAlarm] = useState();
+    const [errorServerAlarm, seterrorServerAlarm] = useState(false);
     const retryCountRef = useRef(0);
 
 
@@ -56,9 +56,6 @@ export const Checker = () => {
         };
 
         fetchWebsites();
-
-        // const interval = setInterval(fetchWebsites, 60000);
-        // return () => clearInterval(interval);
 
     }, []);
 

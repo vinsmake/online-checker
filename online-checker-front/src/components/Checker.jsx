@@ -11,7 +11,7 @@ export const Checker = () => {
     const [websites, setWebsites] = useState([]);
     const [loading, setLoading] = useState(true);
     const [errorAlarm, setErrorAlarm] = useState(false);
-    const [errorServerAlarm, seterrorServerAlarm] = useState();
+    const [errorServerAlarm, seterrorServerAlarm] = useState(false);
     const retryCountRef = useRef(0);
 
 
@@ -27,7 +27,7 @@ export const Checker = () => {
                 setLoading(false);
                 setErrorAlarm(false);
                 seterrorServerAlarm(false);
-                setTimeout(fetchWebsites, 30000);
+                setTimeout(fetchWebsites, 60000);
                 console.log('Data fetched');
             } catch (err) {
                 console.error('Error fetching data:', err);
@@ -56,9 +56,6 @@ export const Checker = () => {
         };
 
         fetchWebsites();
-
-        // const interval = setInterval(fetchWebsites, 60000);
-        // return () => clearInterval(interval);
 
     }, []);
 

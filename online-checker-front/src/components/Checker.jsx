@@ -15,8 +15,8 @@ export const Checker = () => {
     const retryCountRef = useRef(0);
 
 
-    const firstTry = 5;
-    const secondTry = 10;
+    const firstTry = 3;
+    const secondTry = 6;
 
     useEffect(() => {
         const fetchWebsites = async () => {
@@ -35,7 +35,7 @@ export const Checker = () => {
 
                 if (retryCountRef.current <= firstTry) {
                     console.log(`Reintentando... (${retryCountRef.current + 1}/${firstTry})`);
-                    setTimeout(fetchWebsites, 5000);
+                    setTimeout(fetchWebsites, 3000);
                     retryCountRef.current += 1;
                 }
 
@@ -43,13 +43,13 @@ export const Checker = () => {
                     setErrorAlarm(true);
                     setLoading(false);
                     console.log(`Reintentando... (${retryCountRef.current + 1}/${secondTry})`);
-                    setTimeout(fetchWebsites, 5000);
+                    setTimeout(fetchWebsites, 3000);
                     retryCountRef.current += 1;
                 } else {
                     seterrorServerAlarm(true);
                     setErrorAlarm(false);
                     console.log(`Reintentando... (${retryCountRef.current + 1} veces)`);
-                    setTimeout(fetchWebsites, 5000);
+                    setTimeout(fetchWebsites, 3000);
                     retryCountRef.current += 1;
                 }
             }

@@ -27,7 +27,7 @@ export const Checker = () => {
                 setLoading(false);
                 setErrorAlarm(false);
                 seterrorServerAlarm(false);
-                setTimeout(fetchWebsites, 30000);
+                setTimeout(fetchWebsites, 60000);
                 console.log('Data fetched');
             } catch (err) {
                 console.error('Error fetching data:', err);

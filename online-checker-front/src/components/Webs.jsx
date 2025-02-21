@@ -29,8 +29,14 @@ export const Webs = ({ websites }) => {
                         >
                             {/* Desktop: Una sola fila */}
                             {/* website name */}
-                            <div className="hidden md:grid grid-cols-4">
-                                <div className="col-span-1 text-blue-500 font-bold hover:underline">
+                            <div className="hidden md:grid grid-cols-[3rem_20rem_6rem_10rem_auto] gap-2">
+                                {/* Columna del número con ancho fijo */}
+                                <div className="w-[3rem] text-center font-bold text-gray-700">
+                                    {index + 1}
+                                </div>
+
+                                {/* Columna de la URL */}
+                                <div className="text-blue-500 font-bold hover:underline">
                                     <a
                                         href={`https://${website.website}`}
                                         target="_blank"
@@ -39,40 +45,47 @@ export const Webs = ({ websites }) => {
                                         {website.website}
                                     </a>
                                 </div>
-                                {/* website status */}
-                                <div className="col-span-1 text-black font-semibold">
+
+                                {/* Columna del estado */}
+                                <div className="text-black font-semibold">
                                     <span
                                         className={`px-4 py-2 rounded ${website.status === "Online"
-                                            ? "text-green-700 bg-green-200"
-                                            : website.status === "Danger"
-                                                ? "text-yellow-700 bg-yellow-200"
-                                                : "text-red-700 bg-red-200"
+                                                ? "text-green-700 bg-green-200"
+                                                : website.status === "Danger"
+                                                    ? "text-yellow-700 bg-yellow-200"
+                                                    : "text-red-700 bg-red-200"
                                             }`}
                                     >
                                         {website.status}
                                     </span>
                                 </div>
-                                {/* website response */}
-                                <div className="col-span-1 text-black">
+
+                                {/* Columna del tiempo de respuesta */}
+                                <div className="text-black">
                                     {website.responseTime === "N/A" ? "Sin respuesta" : website.responseTime}
                                 </div>
-                                {/* website code */}
-                                <div className="col-span-1 text-black">
+
+                                {/* Columna del código de estado */}
+                                <div className="text-black">
                                     {website.status === "Online" ? website.statusCode : website.error || "Error no listado"}
                                 </div>
                             </div>
 
 
                             {/* Mobile: Dos filas */}
-                            <div className="grid grid-cols-2 md:hidden gap-2">
+                            <div className="grid grid-cols-[auto_auto] md:hidden gap-2">
 
                                 {/* website name */}
                                 <div className="text-blue-500 font-bold hover:underline">
+
                                     <a
                                         href={`https://${website.website}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
+                                    <span className="font-bold text-gray-700">
+                                        {index + 1 + "- "}
+                                    </span>
                                         {website.website}
                                     </a>
                                 </div>

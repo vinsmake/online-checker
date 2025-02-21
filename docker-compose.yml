@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./online-checker-backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./online-checker-backend/data:/app/data
+    restart: always
+
+  frontend:
+    build:
+      context: ./online-checker-front
+    ports:
+      - "3000:80"
+    restart: always
